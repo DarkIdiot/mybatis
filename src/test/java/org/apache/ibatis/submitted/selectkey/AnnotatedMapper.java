@@ -17,11 +17,7 @@ package org.apache.ibatis.submitted.selectkey;
 
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.SelectKey;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 public interface AnnotatedMapper {
 
@@ -58,6 +54,9 @@ public interface AnnotatedMapper {
     @Update("update table2 set name = #{name} where id = #{nameId}")
     @Options(useGeneratedKeys=true, keyProperty="generatedName")
     int updateTable2WithGeneratedKey(Name name);
+
+    @Select("Select id as nameId,name,name_fred as generatedName from table2 where id = #{id} limit 1 ")
+    Name selectTable2(Integer id);
 
     int updateTable2WithGeneratedKeyXml(Name name);
 

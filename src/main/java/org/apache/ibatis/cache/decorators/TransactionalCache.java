@@ -133,6 +133,11 @@ public class TransactionalCache implements Cache {
     }
   }
 
+  // 由于当clearOnCommit 为true，会返回空的值导致blockingCache锁定key，在回滚的时候一定要解除锁定
+  /**
+   * Blocking cache support has been added. Therefore any get() that returns a cache miss
+   * will be followed by a put() so any lock associated with the key can be released.
+   */
   private void unlockMissedEntries() {
     for (Object entry : entriesMissedInCache) {
       delegate.putObject(entry, null);

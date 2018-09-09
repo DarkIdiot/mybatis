@@ -32,7 +32,7 @@ public interface ResultContext {
 
   boolean isStopped();
 
-  //停止?
+  //停止
   void stop();
 
 }

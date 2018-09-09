@@ -91,9 +91,9 @@ public class DefaultParameterHandler implements ParameterHandler {
           TypeHandler typeHandler = parameterMapping.getTypeHandler();
           JdbcType jdbcType = parameterMapping.getJdbcType();
           if (value == null && jdbcType == null) {
-            //不同类型的set方法不同，所以委派给子类的setParameter方法
             jdbcType = configuration.getJdbcTypeForNull();
           }
+          //不同类型的set方法不同，所以委派给子类的setParameter方法
           typeHandler.setParameter(ps, i + 1, value, jdbcType);
         }
       }

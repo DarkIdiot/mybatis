@@ -210,6 +210,7 @@ public class SelectKeyTest {
         
         name.setName("Wilma");
         rows = mapper.updateTable2WithGeneratedKeyXml(name);
+        Name nameDB = mapper.selectTable2(name.getNameId());
         assertEquals(1, rows);
         assertEquals(22, name.getNameId());
         assertEquals("Wilma_fred", name.getGeneratedName());
