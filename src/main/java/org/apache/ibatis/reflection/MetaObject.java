@@ -87,6 +87,10 @@ public class MetaObject {
     return originalObject;
   }
 
+  public ObjectWrapper getObjectWrapper() {
+    return objectWrapper;
+  }
+
   //--------以下方法都是委派给ObjectWrapper------
   //查找属性
   public String findProperty(String propName, boolean useCamelCaseMapping) {
@@ -173,9 +177,6 @@ public class MetaObject {
     return MetaObject.forObject(value, objectFactory, objectWrapperFactory);
   }
 
-  public ObjectWrapper getObjectWrapper() {
-    return objectWrapper;
-  }
 
   //是否是集合
   public boolean isCollection() {
