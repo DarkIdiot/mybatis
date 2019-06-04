@@ -44,8 +44,9 @@ public final class PropertyNamer {
     }
 
     //如果只有1个字母-->转为小写
-    //如果大于1个字母，第二个字母非大写-->转为小写
-    //String uRL -->String getuRL() {
+    //如果大于1个字母，第二个字母是小写-->第一个字母转为小写
+    //Url => url
+    //uRI => uRI
     if (name.length() == 1 || (name.length() > 1 && !Character.isUpperCase(name.charAt(1)))) {
       name = name.substring(0, 1).toLowerCase(Locale.ENGLISH) + name.substring(1);
     }

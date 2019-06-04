@@ -188,7 +188,7 @@ public class SelectKeyTest {
         rows = mapper.updateTable2WithGeneratedKey(name);
         assertEquals(1, rows);
         assertEquals(22, name.getNameId());
-        assertEquals("Wilma_fred", name.getGeneratedName());
+        assertEquals("barney_fred", name.getGeneratedName());
       } finally {
         sqlSession.close();
       }
