@@ -138,12 +138,12 @@ public class CacheBuilder {
         ((ScheduledCache) cache).setClearInterval(clearInterval);
       }
       if (readWrite) {
-          //如果readOnly=false,可读写的缓存 会返回缓存对象的拷贝(通过序列化) 。这会慢一些,但是安全,因此默认是 false。
+          //如果readOnly=true,序列化的缓存 会返回缓存对象的拷贝(通过序列化) 。这会慢一些,但是安全节省内存,因此默认是 false。
         cache = new SerializedCache(cache);
       }
       //日志缓存
       cache = new LoggingCache(cache);
-      //同步缓存, 3.2.6以后这个类已经没用了，考虑到Hazelcast, EhCache已经有锁机制了，所以这个锁就画蛇添足了。
+      // 同步锁，解决多线程访问的线程安全问题，但是效率低下
       cache = new SynchronizedCache(cache);
       if (blocking) {
         cache = new BlockingCache(cache);

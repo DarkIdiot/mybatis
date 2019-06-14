@@ -53,6 +53,7 @@ public class ErrorContext {
   }
 
   //啥意思？把ErrorContext存起来供后用？并把ThreadLocal里的东西清空了？
+  //备忘录模式
   public ErrorContext store() {
     stored = this;
     LOCAL.set(new ErrorContext());

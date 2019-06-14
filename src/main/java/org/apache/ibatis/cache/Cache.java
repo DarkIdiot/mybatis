@@ -43,6 +43,7 @@ import java.util.concurrent.locks.ReadWriteLock;
  * 缓存
  *
  */
+// SynchronizedCache -> LoggingCache -> SerializedCache -> LruCache -> PerpetualCache。
 public interface Cache {
 
   /**

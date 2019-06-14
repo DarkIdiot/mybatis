@@ -126,7 +126,7 @@ public class SerializedCache implements Cache {
     return result;
   }
 
-  //这个Custom不明白何意
+  // 加速解析class的速度?
   public static class CustomObjectInputStream extends ObjectInputStream {
 
     public CustomObjectInputStream(InputStream in) throws IOException {
