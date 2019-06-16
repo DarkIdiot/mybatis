@@ -98,6 +98,7 @@ public class DefaultSqlSession implements SqlSession {
   }
 
   //核心selectMap
+  // 将返回的list中bean的相应mapkey对应的属性取出来作为返回的map的key。
   @Override
   public <K, V> Map<K, V> selectMap(String statement, Object parameter, String mapKey, RowBounds rowBounds) {
     //转而去调用selectList
@@ -304,6 +305,7 @@ public class DefaultSqlSession implements SqlSession {
   }
 
   //把参数包装成Collection
+  // 这里就是为什么mapper文件里面用 list collection array 可以取值的原因
   private Object wrapCollection(final Object object) {
     if (object instanceof Collection) {
       //参数若是Collection型，做collection标记

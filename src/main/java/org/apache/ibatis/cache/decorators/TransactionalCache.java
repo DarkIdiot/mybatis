@@ -73,7 +73,15 @@ public class TransactionalCache implements Cache {
     if (object == null) {
       entriesMissedInCache.add(key);
     }
-    // issue #146
+    // issue #146 Avoid using caches that are dirty but use the rest.
+    /**
+     * The problem is:
+     * insert X to table
+     * commit
+     * select * from table
+     * delete X from table
+     * select * from table -> this should not retrieve any data
+     */
     if (clearOnCommit) {
       return null;
     } else {
