@@ -34,7 +34,11 @@ import org.apache.ibatis.cache.CacheException;
  * @author Eduardo Macarron
  *
  */
-// 这个类的实现要结合transaction cache 去理解。
+
+/**
+ * Let's say 1000 clients call for query_1 which takes 5 seconds to execute. Until query_1 is completed, MyBatis makes DB calls for query_1 repeatedly and does not realize that query_1 is already in progress. So Mybatis makes hundreds of concurrent calls to DB for same query_1, effectively not using caching.
+ * This overloads our DB and leads to request failures.
+ */
 public class BlockingCache implements Cache {
 
   private long timeout;
@@ -56,6 +60,7 @@ public class BlockingCache implements Cache {
     return delegate.getSize();
   }
 
+  // 缓存的使用理解，由于是作为缓存，缓存返回空就会触发去数据库查询并且设置缓存，进而让后续进入的线程能够解除阻塞去缓存里面读取数据
   @Override
   public void putObject(Object key, Object value) {
     try {
