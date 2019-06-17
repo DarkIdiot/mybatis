@@ -57,12 +57,11 @@ public class SqlRunnerTest extends BaseDataTest {
   public void shouldInsert() throws Exception {
     DataSource ds = createUnpooledDataSource(BLOG_PROPERTIES);
     runScript(ds, BLOG_DDL);
-    Connection connection = ds.getConnection();
+    Connection connection = ds.getConnection(); // auto commit
     SqlRunner exec = new SqlRunner(connection);
     exec.setUseGeneratedKeySupport(true);
     int id = exec.insert("INSERT INTO author (username, password, email, bio) VALUES (?,?,?,?)", "someone", "******", "someone@apache.org", Null.LONGVARCHAR);
     Map<String,Object> row = exec.selectOne("SELECT * FROM author WHERE username = ?", "someone");
-    connection.rollback();
     connection.close();
     assertTrue(SqlRunner.NO_GENERATED_KEY != id);
     assertEquals("someone", row.get("USERNAME"));
