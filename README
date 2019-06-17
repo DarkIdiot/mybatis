@@ -42,6 +42,7 @@ org.apache.ibatis.reflection.invoker
 org.apache.ibatis.reflection.property
 org.apache.ibatis.reflection.wrapper
 可以参考MetaObjectTest来跟踪调试，基本上用到了reflection包下所有的类
+// 反射工厂的使用， 注意对象工厂以及对象包装工厂对于增强逻辑的埋点
 
 8.数据源
 org.apache.ibatis.datasource
