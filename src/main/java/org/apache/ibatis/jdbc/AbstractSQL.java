@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * AbstractSQL, Statement Builder的核心,参见mybatis文档Statement Builders一章
  * 建造者模式
- * 可以参考SQLTest，实际上感觉这个类用处不大
+ * 这个类是sql的构造类
  */
 public abstract class AbstractSQL<T> {
 

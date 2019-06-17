@@ -201,7 +201,7 @@ public class ScriptRunner {
       executeStatement(command.toString());
       command.setLength(0);
     } else if (trimmedLine.length() > 0) {
-      //没有分号，先加入，等后面的分号
+      // 没有分号，先存储起来，等待拼成完整的一句sql语句
       command.append(line);
       command.append(LINE_SEPARATOR);
     }
@@ -221,6 +221,7 @@ public class ScriptRunner {
     //就是用最简单的JDBC来执行
     boolean hasResults = false;
     Statement statement = connection.createStatement();
+    // 开启转义处理
     statement.setEscapeProcessing(escapeProcessing);
     String sql = command;
     if (removeCRs) {

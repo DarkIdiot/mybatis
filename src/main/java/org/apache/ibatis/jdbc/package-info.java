@@ -15,6 +15,7 @@
  */
 
 /**
- * TODO fillme.
+ * notes：这个包的实现已经被弃用。
+ * 利用list存储结构，分别将sql的各种元素存储起来然后构造出sql语句。
  */
 package org.apache.ibatis.jdbc;

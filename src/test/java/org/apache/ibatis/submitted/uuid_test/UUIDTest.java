@@ -15,6 +15,7 @@
  */
 package org.apache.ibatis.submitted.uuid_test;
 
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.sql.Connection;
 import java.util.UUID;
@@ -45,7 +46,7 @@ public class UUIDTest {
     Connection conn = session.getConnection();
     reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/uuid_test/CreateDB.sql");
     ScriptRunner runner = new ScriptRunner(conn);
-    runner.setLogWriter(null);
+    runner.setLogWriter(new PrintWriter(System.out));
     runner.runScript(reader);
     reader.close();
     session.close();
@@ -64,7 +65,7 @@ public class UUIDTest {
   }
 
   @Test
-  public void shouldInsertAUser() {
+  public void xshouldInsertAUser() {
     SqlSession sqlSession = sqlSessionFactory.openSession();
     try {
       Mapper mapper = sqlSession.getMapper(Mapper.class);
