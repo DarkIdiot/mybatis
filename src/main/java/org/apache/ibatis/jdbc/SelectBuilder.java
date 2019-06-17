@@ -22,7 +22,7 @@ package org.apache.ibatis.jdbc;
  */
 /**
  * SELECT建造者,已废弃
- * 可以看到仅仅是包装了一层，转而去调用SQL的方法
+ * 这个类实现了仅仅是select的语句的构造的封装，是SqlBuilder 实现的一部分，所以被废弃了。
  */
 @Deprecated
 public class SelectBuilder {
