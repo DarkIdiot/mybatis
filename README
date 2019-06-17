@@ -60,7 +60,7 @@ org.apache.ibatis.session
 org.apache.ibatis.session.defaults
 
 11.jdbc单元测试工具
-org.apache.ibatis.jdbc
+org.apache.ibatis.jdbc  很简单的通过建造者模式构建sql语句的实现。主要是用于测试方法执行脚本初始化db 使用。
 
 12.构建
 org.apache.ibatis.builder
