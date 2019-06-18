@@ -79,7 +79,7 @@ org.apache.ibatis.scripting.xmltags
 org.apache.ibatis.annotations
 
 16.绑定
-org.apache.ibatis.binding
+org.apache.ibatis.binding  mapper 的动态代理生成器的包，封装sql 调用
 
 17.执行器
 org.apache.ibatis.executor

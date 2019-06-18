@@ -151,8 +151,11 @@ public abstract class BaseExecutor implements Executor {
  }
 
   @SuppressWarnings("unchecked")
-  // 子查询的延迟加载会导致递归调用query方法.
-  // Object parameter 分为多参数和单一参数，分别构造成map 或者 原生对象直接访问，由反射工厂屏蔽了一切的访问细节。
+  /**
+   * Object parameter 分为多参数和单一参数，分别为封装成paramMap或者原对象，由反射工厂屏蔽了一切的访问细节。 具体代码参考
+   * {@link org.apache.ibatis.binding.MapperMethod.MethodSignature.convertArgsToSqlCommandParam}
+   */
+  // 子查询的延迟加载会导致递归调用query方法,并且与缓存中的EXECUTION_PLACEHOLDER有关系。
   @Override
   public <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws SQLException {
     ErrorContext.instance().resource(ms.getResource()).activity("executing a query").object(ms.getId());
