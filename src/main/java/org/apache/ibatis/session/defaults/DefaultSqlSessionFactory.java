@@ -94,6 +94,7 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
     return configuration;
   }
 
+  // sqlSession -> Executor -> Transaction -> connection
   private SqlSession openSessionFromDataSource(ExecutorType execType, TransactionIsolationLevel level, boolean autoCommit) {
     Transaction tx = null;
     try {
@@ -115,6 +116,7 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
     }
   }
 
+  // sqlSession -> Executor -> Transaction -> connection
   private SqlSession openSessionFromConnection(ExecutorType execType, Connection connection) {
     try {
       boolean autoCommit;

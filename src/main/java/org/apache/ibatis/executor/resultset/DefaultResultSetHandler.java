@@ -695,7 +695,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
       final CacheKey key = executor.createCacheKey(nestedQuery, nestedQueryParameterObject, RowBounds.DEFAULT, nestedBoundSql);
       final Class<?> targetType = propertyMapping.getJavaType();
       if (executor.isCached(nestedQuery, key)) {
-    	//如果已经有一级缓存了，则延迟加载(实际上deferLoad方法中可以看到则是立即加载)
+        // 存在一级缓存，如果缓存中的value不是placeholder 则直接加载数据。否者等待所有的查询完毕了再加载数据到result中.
         executor.deferLoad(nestedQuery, metaResultObject, property, key, targetType);
       } else {
     	//否则lazyLoader.addLoader 需要延迟加载则addLoader

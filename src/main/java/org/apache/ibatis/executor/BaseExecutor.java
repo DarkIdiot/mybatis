@@ -151,6 +151,8 @@ public abstract class BaseExecutor implements Executor {
  }
 
   @SuppressWarnings("unchecked")
+  // 子查询的延迟加载会导致递归调用query方法.
+  // Object parameter 分为多参数和单一参数，分别构造成map 或者 原生对象直接访问，由反射工厂屏蔽了一切的访问细节。
   @Override
   public <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws SQLException {
     ErrorContext.instance().resource(ms.getResource()).activity("executing a query").object(ms.getId());
@@ -333,7 +335,7 @@ public abstract class BaseExecutor implements Executor {
   //从数据库查
   private <E> List<E> queryFromDatabase(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws SQLException {
     List<E> list;
-    //先向缓存中放入占位符？？？
+    // EXECUTION_PLACEHOLDER 感觉嵌套查询里面的延迟加载有关系
     localCache.putObject(key, EXECUTION_PLACEHOLDER);
     try {
       list = doQuery(ms, parameter, rowBounds, resultHandler, boundSql);
