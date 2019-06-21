@@ -79,7 +79,8 @@ org.apache.ibatis.scripting.xmltags
 org.apache.ibatis.annotations
 
 16.绑定
-org.apache.ibatis.binding
+org.apache.ibatis.binding   主要是使用动态代理生成对应的mapper的代理类，依赖sqlSession去执行对应的sql语句并返回结果。
+    其中在MapperMethod中也有对于被代理方法签名中含有的@Param、RowBounds ResultHandler的解读，并提取作为sqlSession执行sql的参数传入。
 
 17.执行器
 org.apache.ibatis.executor
@@ -94,6 +95,13 @@ org.apache.ibatis.executor.statement
 
 18.插件
 org.apache.ibatis.plugin
+
+
+Question 1: 如何做到属性在被调用的时候才去查询数据库的策略？
+
+
+
+
 
 参考资料
 MyBatis官方文档 - http://www.mybatis.org/mybatis-3/zh/index.html

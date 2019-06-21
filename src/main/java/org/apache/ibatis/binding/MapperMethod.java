@@ -265,7 +265,8 @@ public class MapperMethod {
         final Map<String, Object> param = new ParamMap<Object>();
         int i = 0;
         for (Map.Entry<Integer, String> entry : params.entrySet()) {
-          //1.先加一个#{0},#{1},#{2}...参数
+          //1. hasNamedParameters 为false entry.value 为 0、1、2、3  #{0},#{1},#{2}...参数
+          //2. hasNamedParameters 为true entry.value 为@Param指定的值 #{name}参数
           param.put(entry.getValue(), args[entry.getKey().intValue()]);
           // issue #71, add param names as param1, param2...but ensure backward compatibility
           final String genericParamName = "param" + String.valueOf(i + 1);
@@ -274,12 +275,32 @@ public class MapperMethod {
             //你可以传递多个参数给一个映射器方法。如果你这样做了, 
             //默认情况下它们将会以它们在参数列表中的位置来命名,比如:#{param1},#{param2}等。
             //如果你想改变参数的名称(只在多参数情况下) ,那么你可以在参数上使用@Param(“paramName”)注解。 
-            param.put(genericParamName, args[entry.getKey()]);
+            param.put(genericParamName, args[entry.getKey().intValue()]);
           }
           i++;
         }
         return param;
       }
+    }
+
+    //得到所有参数
+    private SortedMap<Integer, String> getParams(Method method, boolean hasNamedParameters) {
+      //用一个TreeMap,这样就保证还是按参数的先后顺序
+      final SortedMap<Integer, String> params = new TreeMap<Integer, String>();
+      final Class<?>[] argTypes = method.getParameterTypes();
+      for (int i = 0; i < argTypes.length; i++) {
+        //是否不是RowBounds/ResultHandler类型的参数
+        if (!RowBounds.class.isAssignableFrom(argTypes[i]) && !ResultHandler.class.isAssignableFrom(argTypes[i])) {
+          //参数名字默认为0,1,2，这就是为什么xml里面可以用#{1}这样的写法来表示参数了
+          String paramName = String.valueOf(params.size());
+          if (hasNamedParameters) {
+            //还可以用注解@Param来重命名参数
+            paramName = getParamNameFromAnnotation(method, i, paramName);
+          }
+          params.put(i, paramName);
+        }
+      }
+      return params;
     }
 
     public boolean hasRowBounds() {
@@ -343,26 +364,6 @@ public class MapperMethod {
         }
       }
       return mapKey;
-    }
-
-    //得到所有参数
-    private SortedMap<Integer, String> getParams(Method method, boolean hasNamedParameters) {
-      //用一个TreeMap,这样就保证还是按参数的先后顺序
-      final SortedMap<Integer, String> params = new TreeMap<Integer, String>();
-      final Class<?>[] argTypes = method.getParameterTypes();
-      for (int i = 0; i < argTypes.length; i++) {
-        //是否不是RowBounds/ResultHandler类型的参数
-        if (!RowBounds.class.isAssignableFrom(argTypes[i]) && !ResultHandler.class.isAssignableFrom(argTypes[i])) {
-          //参数名字默认为0,1,2，这就是为什么xml里面可以用#{1}这样的写法来表示参数了
-          String paramName = String.valueOf(params.size());
-          if (hasNamedParameters) {
-            //还可以用注解@Param来重命名参数
-            paramName = getParamNameFromAnnotation(method, i, paramName);
-          }
-          params.put(i, paramName);
-        }
-      }
-      return params;
     }
 
     private String getParamNameFromAnnotation(Method method, int i, String paramName) {
