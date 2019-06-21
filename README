@@ -95,4 +95,8 @@ org.apache.ibatis.executor.statement
 18.插件
 org.apache.ibatis.plugin
 
-
+参考资料
+MyBatis官方文档 - http://www.mybatis.org/mybatis-3/zh/index.html
+MyBatis-Spring官方文档 - http://www.mybatis.org/spring/zh/index.html
+MyBatis源码 - https://github.com/mybatis/mybatis-3
+MyBatis-Spring源码 - https://github.com/mybatis/spring
