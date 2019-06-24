@@ -85,7 +85,9 @@ org.apache.ibatis.binding   主要是使用动态代理生成对应的mapper的�
 17.执行器
 org.apache.ibatis.executor
 org.apache.ibatis.executor.keygen
-org.apache.ibatis.executor.loader
+org.apache.ibatis.executor.loader  实质是记录要延迟加载的的属性，然后在被调用的时候去数据库获取数据并缓存。
+这里需要注意的是还没有被延迟加载的属性持久化存储在缓存里面应该如何反序列化回来。
+
 org.apache.ibatis.executor.loader.cglib
 org.apache.ibatis.executor.loader.javassist
 org.apache.ibatis.executor.parameter

@@ -66,6 +66,7 @@ public abstract class AbstractSerialStateHolder implements Externalizable {
 
   @Override
   public final void writeExternal(final ObjectOutput out) throws IOException {
+    // 记录是否访问过
     boolean firstRound = false;
     final ByteArrayOutputStream baos = new ByteArrayOutputStream();
     ObjectOutputStream os = stream.get();

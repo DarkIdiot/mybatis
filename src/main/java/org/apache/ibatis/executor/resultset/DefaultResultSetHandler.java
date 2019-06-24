@@ -562,7 +562,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
       for (ResultMapping propertyMapping : propertyMappings) {
         // issue gcode #109 && issue #149
         if (propertyMapping.getNestedQueryId() != null && propertyMapping.isLazy()) {
-          //TODO 使用代理(cglib/javaassist)
+          // 使用代理(cglib/javaassist) 实现延迟加载
           return configuration.getProxyFactory().createProxy(resultObject, lazyLoader, configuration, objectFactory, constructorArgTypes, constructorArgs);
         }
       }

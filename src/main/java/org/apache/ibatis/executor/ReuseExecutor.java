@@ -36,7 +36,7 @@ import org.apache.ibatis.transaction.Transaction;
  * @author Clinton Begin
  */
 /**
- * 可重用的执行器
+ * 可重用的执行器 主要是用一个map来缓存statement. 还是会有一些的性能的提升.
  */
 public class ReuseExecutor extends BaseExecutor {
 

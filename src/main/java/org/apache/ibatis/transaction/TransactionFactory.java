@@ -29,7 +29,7 @@ import org.apache.ibatis.session.TransactionIsolationLevel;
  */
 /**
  * 事务工厂
- *
+ * 如果没有事物去封装connection  怎么支持spring的事物注解的机制
  */
 public interface TransactionFactory {
 
