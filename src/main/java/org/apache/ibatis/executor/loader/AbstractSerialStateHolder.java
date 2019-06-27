@@ -90,6 +90,7 @@ public abstract class AbstractSerialStateHolder implements Externalizable {
     }
   }
 
+  // 反序列化第一次调用是返回的字节数组并存储在userBeanBytes字段里面，后续由 this.readResolve() 进行字节码的解读并给对象属性赋值。
   @Override
   public final void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
     final Object data = in.readObject();
@@ -100,6 +101,8 @@ public abstract class AbstractSerialStateHolder implements Externalizable {
     }
   }
 
+
+  // readResolve 的方法的理解至关重要。 是反序列化的增强方法，分为第一次调用和第二次及以后调用，将userBeanBytes
   @SuppressWarnings("unchecked")
   protected final Object readResolve() throws ObjectStreamException {
     /* Second run */

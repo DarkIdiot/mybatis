@@ -50,7 +50,7 @@ org.apache.ibatis.datasource.jndi
 org.apache.ibatis.datasource.pooled
 org.apache.ibatis.datasource.unpooled
 
-9.事务
+9.事务 封装connection，并提供了事务支持的基础方法的接口与工厂类
 org.apache.ibatis.transaction
 org.apache.ibatis.transaction.jdbc
 org.apache.ibatis.transaction.managed

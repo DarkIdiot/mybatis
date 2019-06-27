@@ -26,7 +26,10 @@ public interface WriteReplaceInterface {
    *  it's invoked after {@link AbstractSerialStateHolder#readResolve()},
    *  likes {@link AbstractSerialStateHolder#readResolve()}
    *  实现writeReplace就不要实现writeObject了，因为writeReplace的返回值会被自动写入输出流中，就相当于自动这样调用：writeObject(writeReplace());
-   *  并且writeReplace的返回值（对象）必须是可序列话的，
+   *  并且writeReplace的返回值（对象）必须是可序列化的，
+   *  此接口的意义在于在开启了延迟加载的场景下的时，所有的pojo其实都是代理对象，只有在开始序列化对象的时候，此方法会判断pojo是否存在延迟加载属性。
+   *  如果不存在，则由此方法将代理对象替换为普通的pojo对象，并完成属性的拷贝。
+   *
    * @return
    * @throws ObjectStreamException
    */
