@@ -22,6 +22,14 @@ import java.io.ObjectStreamException;
  */
 public interface WriteReplaceInterface {
 
+  /**
+   *  it's invoked after {@link AbstractSerialStateHolder#readResolve()},
+   *  likes {@link AbstractSerialStateHolder#readResolve()}
+   *  实现writeReplace就不要实现writeObject了，因为writeReplace的返回值会被自动写入输出流中，就相当于自动这样调用：writeObject(writeReplace());
+   *  并且writeReplace的返回值（对象）必须是可序列话的，
+   * @return
+   * @throws ObjectStreamException
+   */
   Object writeReplace() throws ObjectStreamException;
 
 }

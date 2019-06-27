@@ -145,11 +145,13 @@ public class CglibProxyFactory implements ProxyFactory {
             if (lazyLoader.size() > 0) {
               return new CglibSerialStateHolder(original, lazyLoader.getProperties(), objectFactory, constructorArgTypes, constructorArgs);
             } else {
+              // 这里就是不存在lazyLoader properties, 就返回一个该对象类型的实例. 就跳出了lazy loader的范畴.
               return original;
             }
           } else {
         	//这里是关键，延迟加载就是调用ResultLoaderMap.loadAll()
             if (lazyLoader.size() > 0 && !FINALIZE_METHOD.equals(methodName)) {
+              //  lazyLoadTriggerMethods  => "equals", "clone", "hashCode", "toString"
               if (aggressive || lazyLoadTriggerMethods.contains(methodName)) {
                 lazyLoader.loadAll();
               } else if (PropertyNamer.isProperty(methodName)) {
