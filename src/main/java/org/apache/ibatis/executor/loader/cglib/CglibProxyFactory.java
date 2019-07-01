@@ -61,6 +61,7 @@ public class CglibProxyFactory implements ProxyFactory {
     }
   }
 
+  // 延迟加载的真谛是所有的对象都是延迟加载，并不是子查询才延迟加载。
   @Override
   public Object createProxy(Object target, ResultLoaderMap lazyLoader, Configuration configuration, ObjectFactory objectFactory, List<Class<?>> constructorArgTypes, List<Object> constructorArgs) {
     return EnhancedResultObjectProxyImpl.createProxy(target, lazyLoader, configuration, objectFactory, constructorArgTypes, constructorArgs);

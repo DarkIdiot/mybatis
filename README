@@ -1,4 +1,4 @@
-﻿mybatis源码中文注释版
+mybatis源码中文注释版
 
 1.兵马未动，日志先行
 org.apache.ibatis.logging
@@ -87,6 +87,19 @@ org.apache.ibatis.executor
 org.apache.ibatis.executor.keygen
 org.apache.ibatis.executor.loader  实质是记录要延迟加载的的属性，然后在被调用的时候去数据库获取数据并缓存。
 这里需要注意的是还没有被延迟加载的属性持久化存储在缓存里面应该如何反序列化回来。
+
+直接加载
+:执行完主加载对象的select语句，马上就会执行关联对象的select语句。
+侵入式延迟加载
+:执行对主加载对象的查询时，不会执行关联对象的查询，但是当访问主加载对象的详情时，就会马上执行关联对象的select查询，也就是说关联对象的查询执行，侵入到了猪价在对象的详情访问中，可以理解为，将关联对象的详情侵入到主加载对象的详情中，作为它的一部分出现了。
+深度延迟加载
+:执行对主加载对象的查询的时候，不会执行对关联对象的查询，访问主加载对象的详情的时候，也不会执行关联对象的select查询，只有当真正的访问关联对象的详情的时候，才会执行对关联对象的select查询。
+
+| 加载方式      | lazyLoadingEnabled        |  aggressiveLazyLoading      |
+| --------     | -----                     | ----                        |
+| 直接加载      | 必须是false，默认是false    |   \                         |
+| 侵入式延迟加载 | 必须是true                 |   必须是true                 |
+| 深度延迟加载   | 必须是true                 |   必须是false，默认是false    |
 
 org.apache.ibatis.executor.loader.cglib
 org.apache.ibatis.executor.loader.javassist

@@ -107,7 +107,7 @@ public abstract class SerializableProxyTest {
   }
 
   @Test
-  public void shouldSerizaliceAFullLoadedObjectToOriginalClass() throws Exception {
+  public void shouldSerializeAFullLoadedObjectToOriginalClass() throws Exception {
     Object proxy = proxyFactory.createProxy(author, new ResultLoaderMap(), new Configuration(), new DefaultObjectFactory(), new ArrayList<Class<?>>(), new ArrayList<Object>());
     Object proxy2 = deserialize(serialize((Serializable) proxy));
     assertEquals(author.getClass(), proxy2.getClass());

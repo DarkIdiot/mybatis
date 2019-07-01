@@ -26,10 +26,7 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamException;
 import java.io.StreamCorruptedException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.ibatis.reflection.factory.ObjectFactory;
 
@@ -40,8 +37,8 @@ import org.apache.ibatis.reflection.factory.ObjectFactory;
 public abstract class AbstractSerialStateHolder implements Externalizable {
 
   private static final long serialVersionUID = 8940388717901644661L;
-  private static final ThreadLocal<ObjectOutputStream> stream = new ThreadLocal<ObjectOutputStream>();
   private byte[] userBeanBytes = new byte[0];
+  private static final ThreadLocal<ObjectOutputStream> stream = new ThreadLocal<ObjectOutputStream>();
   private Object userBean;
   private Map<String, ResultLoaderMap.LoadPair> unloadedProperties;
   private ObjectFactory objectFactory;
@@ -66,7 +63,6 @@ public abstract class AbstractSerialStateHolder implements Externalizable {
 
   @Override
   public final void writeExternal(final ObjectOutput out) throws IOException {
-    // 记录是否访问过
     boolean firstRound = false;
     final ByteArrayOutputStream baos = new ByteArrayOutputStream();
     ObjectOutputStream os = stream.get();
@@ -90,7 +86,6 @@ public abstract class AbstractSerialStateHolder implements Externalizable {
     }
   }
 
-  // 反序列化第一次调用是返回的字节数组并存储在userBeanBytes字段里面，后续由 this.readResolve() 进行字节码的解读并给对象属性赋值。
   @Override
   public final void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
     final Object data = in.readObject();
@@ -102,10 +97,10 @@ public abstract class AbstractSerialStateHolder implements Externalizable {
   }
 
 
-  // readResolve 的方法的理解至关重要。 是反序列化的增强方法，分为第一次调用和第二次及以后调用，将userBeanBytes
   @SuppressWarnings("unchecked")
   protected final Object readResolve() throws ObjectStreamException {
     /* Second run */
+    /** {@link org.apache.ibatis.submitted.serializecircular.SerializeCircularTest#serializeAndDeserializeObjectsWithoutAggressiveLazyLoadingWithoutPreloadingAttribute} */
     if (this.userBean != null && this.userBeanBytes.length == 0) {
       return this.userBean;
     }
