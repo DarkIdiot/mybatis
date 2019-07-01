@@ -96,7 +96,7 @@ org.apache.ibatis.executor.loader  实质是记录要延迟加载的的属性，
 :执行对主加载对象的查询的时候，不会执行对关联对象的查询，访问主加载对象的详情的时候，也不会执行关联对象的select查询，只有当真正的访问关联对象的详情的时候，才会执行对关联对象的select查询。
 
 | 加载方式      | lazyLoadingEnabled        |  aggressiveLazyLoading      |
-| --------     | -----                     | ----                        |
+| :--------:   | :-----:                   | :----:                      |
 | 直接加载      | 必须是false，默认是false    |   \                         |
 | 侵入式延迟加载 | 必须是true                 |   必须是true                 |
 | 深度延迟加载   | 必须是true                 |   必须是false，默认是false    |
