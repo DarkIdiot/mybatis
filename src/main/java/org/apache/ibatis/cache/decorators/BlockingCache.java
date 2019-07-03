@@ -36,7 +36,9 @@ import org.apache.ibatis.cache.CacheException;
  */
 
 /**
- * Let's say 1000 clients call for query_1 which takes 5 seconds to execute. Until query_1 is completed, MyBatis makes DB calls for query_1 repeatedly and does not realize that query_1 is already in progress. So Mybatis makes hundreds of concurrent calls to DB for same query_1, effectively not using caching.
+ * Let's say 1000 clients call for query_1 which takes 5 seconds to execute. Until query_1 is completed, MyBatis makes DB calls for
+ * query_1 repeatedly and does not realize that query_1 is already in progress. So Mybatis makes hundreds of concurrent calls to DB for same query_1,
+ * effectively not using caching.
  * This overloads our DB and leads to request failures.
  */
 public class BlockingCache implements Cache {
@@ -66,15 +68,19 @@ public class BlockingCache implements Cache {
     try {
       delegate.putObject(key, value);
     } finally {
+      // 只是当前的查询线程获取到锁之后才会去释放锁
       releaseLock(key);
     }
   }
 
   @Override
   public Object getObject(Object key) {
+    // 获取到锁然后去查询缓存，缓存不存在则等待从DB查询完毕之后并且初始化缓存之后再释放锁，
+    // 问题点，如果数据库查询出现异常会导致执行查询的线程全部阻塞直到超时.
     acquireLock(key);
     Object value = delegate.getObject(key);
     if (value != null) {
+      // 如果缓存存在则快速释放锁，但是整个缓存的读取是临界资源的操作，会被线性化
       releaseLock(key);
     }        
     return value;
