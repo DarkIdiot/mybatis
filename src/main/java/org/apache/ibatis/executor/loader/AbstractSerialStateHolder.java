@@ -33,6 +33,9 @@ import org.apache.ibatis.reflection.factory.ObjectFactory;
 /**
  * @author Eduardo Macarron
  * @author Franta Mejta
+ *  主要是为了序列化实现延迟加载的代理对象的序列化。 要点1，代理类的是动态生成的，不能和普通对象一样简单的序列化与反序列化，否则会抛出类不存在的异常。
+ *  另外需要处理的是代理类的嵌套互相引用的处理
+ *
  */
 public abstract class AbstractSerialStateHolder implements Externalizable {
 
@@ -64,7 +67,7 @@ public abstract class AbstractSerialStateHolder implements Externalizable {
   @Override
   public final void writeExternal(final ObjectOutput out) throws IOException {
     boolean firstRound = false;
-    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();  // 对于嵌套执行的对象的序列化，直接就转换为空的数组输出。
     ObjectOutputStream os = stream.get();
     if (os == null) {
       os = new ObjectOutputStream(baos);

@@ -85,7 +85,7 @@ org.apache.ibatis.binding   主要是使用动态代理生成对应的mapper的�
 17.执行器
 org.apache.ibatis.executor
 org.apache.ibatis.executor.keygen
-org.apache.ibatis.executor.loader  实质是记录要延迟加载的的属性，然后在被调用的时候去数据库获取数据并缓存。
+org.apache.ibatis.executor.loader  实质是记录要延迟加载的的属性，然后在被调用的时候去数据库获取数据并缓存。 对于Tester进行调试的时候要特别注意关闭debugger的toString方法的调用，否者将会影响到测试结果。
 这里需要注意的是还没有被延迟加载的属性持久化存储在缓存里面应该如何反序列化回来。
 
 直接加载
@@ -100,6 +100,7 @@ org.apache.ibatis.executor.loader  实质是记录要延迟加载的的属性，
 | 直接加载      | 必须是false，默认是false    |   \                         |
 | 侵入式延迟加载 | 必须是true                 |   必须是true                 |
 | 深度延迟加载   | 必须是true                 |   必须是false，默认是false    |
+
 
 org.apache.ibatis.executor.loader.cglib
 org.apache.ibatis.executor.loader.javassist

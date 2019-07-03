@@ -17,7 +17,6 @@ package org.apache.ibatis.executor.loader;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -67,6 +66,32 @@ public class CglibProxyTest extends SerializableProxyTest {
     Author author2 = (Author) deserialize(serialize((Serializable) proxy));
     assertEquals(author, author2);
     assertFalse(author.getClass().equals(author2.getClass()));
+  }
+
+  @Test
+  public void testForSerializeCircleReferenceProxy() throws Exception {
+    final A a = new A();
+    ResultLoaderMap loader = new ResultLoaderMap();
+    loader.addLoader("b", null, null);
+    final A proxyA = (A)((CglibProxyFactory) proxyFactory).createProxy(a, loader, new Configuration(), new DefaultObjectFactory(), new ArrayList<Class<?>>(), new ArrayList<Object>());
+
+    final B b = new B();
+    ResultLoaderMap loader2 = new ResultLoaderMap();
+    loader2.addLoader("a", null, null);
+    final B proxyB = (B)((CglibProxyFactory) proxyFactory).createProxy(b, loader, new Configuration(), new DefaultObjectFactory(), new ArrayList<Class<?>>(), new ArrayList<Object>());
+
+    proxyA.b = proxyB;
+    proxyB.a = proxyA;
+
+    deserialize(serialize((Serializable) proxyA));
+//    deserialize(serialize((Serializable) proxyB));
+
+  }
+  static class A implements Serializable {
+    B b;
+  }
+  static class B implements Serializable{
+    A a;
   }
 
 }
