@@ -59,7 +59,7 @@ public class ResultLoader {
   
   public ResultLoader(Configuration config, Executor executor, MappedStatement mappedStatement, Object parameterObject, Class<?> targetType, CacheKey cacheKey, BoundSql boundSql) {
     this.configuration = config;
-    this.executor = executor;
+    this.executor = executor; // 由于对象会被缓存，所以等到要使用的时候 executor 可能已经关闭，或者说是另外的线程触发了延迟加载
     this.mappedStatement = mappedStatement;
     this.parameterObject = parameterObject;
     this.targetType = targetType;
