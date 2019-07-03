@@ -17,6 +17,7 @@ package org.apache.ibatis.submitted.serializecircular;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -25,6 +26,7 @@ import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -116,8 +118,8 @@ public class SerializeCircularTest {
     serializeAndDeserializeObject(department);
   }
 
-  protected void serializeAndDeserializeObject(Object anObject) {
-    UtilityTester.serializeAndDeserializeObject(anObject);
+  protected Object serializeAndDeserializeObject(Object anObject) {
+    return UtilityTester.serializeAndDeserializeObject(anObject);
   }
 
   private SqlSessionFactory getSqlSessionFactoryXmlConfig(String resource) throws Exception {
@@ -148,4 +150,22 @@ public class SerializeCircularTest {
     }
   }
 
+  @Test
+  public void testForSerializeCircleReference() {
+    final A a = new A();
+    final B b = new B();
+    a.b = b;
+    b.a = a;
+    final A obj1 = (A) UtilityTester.serializeAndDeserializeObject(a);
+    final B obj2 = (B) UtilityTester.serializeAndDeserializeObject(b);
+    Assert.assertEquals(obj1, obj1.b.a);
+    Assert.assertEquals(obj2, obj2.a.b);
+  }
+
+  static class A implements Serializable {
+    B b;
+  }
+  static class B implements Serializable{
+    A a;
+  }
 }

@@ -23,13 +23,14 @@ import java.io.ObjectOutputStream;
 
 public class UtilityTester {
   
-  public static void serializeAndDeserializeObject(Object myObject){
-
+  public static Object serializeAndDeserializeObject(Object myObject){
+    Object o = null;
     try {
-      deserialzeObject(serializeObject(myObject));
+      o = deserialzeObject(serializeObject(myObject));
     } catch (IOException e) {
       System.out.println("Exception: " + e.toString());
     }
+    return o;
   }
 
   private static byte[] serializeObject(Object myObject) throws IOException {
