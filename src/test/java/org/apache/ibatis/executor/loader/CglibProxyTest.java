@@ -43,7 +43,7 @@ public class CglibProxyTest extends SerializableProxyTest {
     loader.addLoader("id", null, null);
     Object proxy = proxyFactory.createProxy(author, loader, new Configuration(), new DefaultObjectFactory(), new ArrayList<Class<?>>(), new ArrayList<Object>());
     Author author2 = (Author) deserialize(serialize((Serializable) proxy));
-    assertTrue(author2 instanceof Factory);
+    assertFalse(author2 instanceof Factory);
   }
 
   @Test(expected = ExecutorException.class)
