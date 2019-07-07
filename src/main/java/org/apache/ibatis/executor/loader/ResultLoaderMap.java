@@ -55,7 +55,9 @@ public class ResultLoaderMap {
 
   //把要延迟加载的属性记到ResultLoaderMap里（一个哈希表）
   public void addLoader(String property, MetaObject metaResultObject, ResultLoader resultLoader) {
+    // 这里处理的是2种场景。 property是StringToken形式的，只取最左侧的值
     String upperFirst = getUppercaseFirstProperty(property);
+    // 如果只是单读的属性字符串 则直接pass， 如果是StringToken 的形式，则判断是否已经含有了延迟加载，如果有则报错。
     if (!upperFirst.equalsIgnoreCase(property) && loaderMap.containsKey(upperFirst)) {
       throw new ExecutorException("Nested lazy loaded result property '" + property +
               "' for query id '" + resultLoader.mappedStatement.getId() +
