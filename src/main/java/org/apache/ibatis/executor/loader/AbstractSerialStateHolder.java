@@ -93,7 +93,7 @@ public abstract class AbstractSerialStateHolder implements Externalizable {
   public final void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
     final Object data = in.readObject();
     if (data.getClass().isArray()) {
-      this.userBeanBytes = (byte[]) data;
+      this.userBeanBytes = (byte[]) data; // 这个只进入一次？
     } else {
       this.userBean = data;
     }

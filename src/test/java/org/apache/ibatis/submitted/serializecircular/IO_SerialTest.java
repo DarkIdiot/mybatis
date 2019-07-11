@@ -302,6 +302,7 @@ class Season_1 implements java.io.Serializable {
 }
 
 class PersonTypeThree implements java.io.Externalizable {
+
     private String name;
     private int age;
 
@@ -333,7 +334,6 @@ class PersonTypeThree implements java.io.Externalizable {
     // 通过实现Externalizable接口实现的序列化必须实现如下两个方法，其他的用法与Serializable一样。
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
-        // TODO Auto-generated method stub
         out.writeObject(new StringBuffer(name).reverse());
         out.writeInt(age);
         System.out.println("writeExternal run");
@@ -341,9 +341,9 @@ class PersonTypeThree implements java.io.Externalizable {
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        // TODO Auto-generated method stub
         this.name = ((StringBuffer) in.readObject()).reverse().toString();
         this.age = in.readInt();
         System.out.println("readExternal run");
     }
 }
+

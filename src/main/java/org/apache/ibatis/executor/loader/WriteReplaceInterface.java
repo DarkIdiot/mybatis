@@ -15,6 +15,7 @@
  */
 package org.apache.ibatis.executor.loader;
 
+import java.io.IOException;
 import java.io.ObjectStreamException;
 
 /**
@@ -33,6 +34,6 @@ public interface WriteReplaceInterface {
    * @return
    * @throws ObjectStreamException
    */
-  Object writeReplace() throws ObjectStreamException;
+  Object writeReplace() throws IOException;
 
 }
