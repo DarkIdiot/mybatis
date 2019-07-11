@@ -120,6 +120,7 @@ Question 1: 如何做到属性在被调用的时候才去查询数据库的策�
 
 
 参考资料
+csdn源码解析 - https://zhuanlan.zhihu.com/p/66543158   // 较为粗糙
 MyBatis官方文档 - http://www.mybatis.org/mybatis-3/zh/index.html
 MyBatis-Spring官方文档 - http://www.mybatis.org/spring/zh/index.html
 MyBatis源码 - https://github.com/mybatis/mybatis-3

@@ -160,6 +160,7 @@ public class SerializeCircularTest {
     final B obj2 = (B) UtilityTester.serializeAndDeserializeObject(b);
     Assert.assertEquals(obj1, obj1.b.a);
     Assert.assertEquals(obj2, obj2.a.b);
+
   }
 
   static class A implements Serializable {
