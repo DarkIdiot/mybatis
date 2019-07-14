@@ -9,21 +9,24 @@ import java.io.*;
 public class TestCircleProxyReference {
 
     @Test
-    public void testCircleReference() {
+    public void testCircleReference() throws IOException {
         Dept$1 dept$1 = new Dept$1();
         Employee employee = new Employee();
         dept$1.employee = employee;
         dept$1.id = 001;
         employee.dept = dept$1;
         employee.id = 0002;
-        Dept dept = (Dept) UtilityTester.serializeAndDeserializeObject(dept$1);
-        Employee employee$1 = (Employee) UtilityTester.serializeAndDeserializeObject(employee);
 
+        FileOutputStream fileOutputStream = new FileOutputStream("text.bin");
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        objectOutputStream.writeObject(dept$1);
+//        Dept dept = (Dept) UtilityTester.serializeAndDeserializeObject(dept$1);
+//        Employee employee$1 = (Employee) UtilityTester.serializeAndDeserializeObject(employee);
     }
 }
 
 class Dept implements Serializable {
-    public Integer id;
+    public int id;
     public Employee employee;
 }
 
@@ -50,7 +53,7 @@ class Dept$1 extends Dept implements WriteReplaceInterface {
 }
 
 class Employee implements Serializable {
-    public Integer id;
+    public int id;
     public Dept dept;
 }
 
