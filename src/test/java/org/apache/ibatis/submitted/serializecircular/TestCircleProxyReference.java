@@ -151,8 +151,3 @@ class SerializeStateHolder implements Externalizable {
         return null;
     }
 }
-
-class DeserializeStateHolder implements Serializable {
-    public Object userBean;
-    public String holderHasValue;
-}
