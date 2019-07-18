@@ -60,7 +60,7 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
  * @author Eduardo Macarron
  */
 /**
- * 默认Map结果处理器
+ * 默认Map结果处理器，需要考虑到底是放回对象还是对象构成的数组。
  * 
  */
 public class DefaultResultSetHandler implements ResultSetHandler {
@@ -431,7 +431,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     }
   }
 
-  //自动映射咯
+  //自动映射咯  就是处理仅仅指定resultType的场景，直接使用字段与属性的对应 完成映射。
   private boolean applyAutomaticMappings(ResultSetWrapper rsw, ResultMap resultMap, MetaObject metaObject, String columnPrefix) throws SQLException {
     final List<String> unmappedColumnNames = rsw.getUnmappedColumnNames(resultMap, columnPrefix);
     boolean foundValues = false;
@@ -552,6 +552,8 @@ public class DefaultResultSetHandler implements ResultSetHandler {
   //
   // INSTANTIATION & CONSTRUCTOR MAPPING
   //
+
+  // typeHandlerRegistry 包括简单类型的处理，以及自己自定义的typeHandler 总的来说，存在typeHandle的Type 就完全交托于handle去处理生成object的过程。
 
   private Object createResultObject(ResultSetWrapper rsw, ResultMap resultMap, ResultLoaderMap lazyLoader, String columnPrefix) throws SQLException {
     final List<Class<?>> constructorArgTypes = new ArrayList<Class<?>>();
