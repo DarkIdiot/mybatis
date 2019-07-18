@@ -33,8 +33,14 @@ import org.apache.ibatis.reflection.factory.ObjectFactory;
 /**
  * @author Eduardo Macarron
  * @author Franta Mejta
- *  主要是为了序列化实现延迟加载的代理对象的序列化。 要点1，代理类的是动态生成的，不能和普通对象一样简单的序列化与反序列化，否则会抛出类不存在的异常。
- *  另外需要处理的是代理类的嵌套互相引用的处理
+ *
+ */
+
+/**
+ *  AbstractSerialStateHolder 与 AbstractEnhancedDeserializationProxy 主要解决的问题：
+ *  1. 延迟加载类是使用代理类库生成的代理类。序列化与反序列化会存在类找不到的问题。
+ *  2. 对于已经触发的并已经加载内容的bean 是需要替换为原来的bean，这样的调用效率更高。
+ *  3. 采用了Externalizable自定义序列化无法处理对象间的互相引用的问题，采用ThreadLocal缓存ObjectOutputStream，然后巧妙的使用userBean替换了当前应该序列化的内容。并解决了对象间循环引用的问题。
  *
  */
 public abstract class AbstractSerialStateHolder implements Externalizable {
@@ -67,7 +73,7 @@ public abstract class AbstractSerialStateHolder implements Externalizable {
   @Override
   public final void writeExternal(final ObjectOutput out) throws IOException {
     boolean firstRound = false;
-    final ByteArrayOutputStream baos = new ByteArrayOutputStream();  // 对于嵌套执行的对象的序列化，直接就转换为空的数组输出。
+    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
     ObjectOutputStream os = stream.get();
     if (os == null) {
       os = new ObjectOutputStream(baos);
@@ -93,7 +99,7 @@ public abstract class AbstractSerialStateHolder implements Externalizable {
   public final void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
     final Object data = in.readObject();
     if (data.getClass().isArray()) {
-      this.userBeanBytes = (byte[]) data; // 这个只进入一次？
+      this.userBeanBytes = (byte[]) data;
     } else {
       this.userBean = data;
     }
