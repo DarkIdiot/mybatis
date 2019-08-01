@@ -580,7 +580,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     final MetaClass metaType = MetaClass.forClass(resultType);
     final List<ResultMapping> constructorMappings = resultMap.getConstructorResultMappings();
     if (typeHandlerRegistry.hasTypeHandler(resultType)) {
-      //基本型
+      //基本型 或者 自定义TypeHandle的基础类型
       return createPrimitiveResultObject(rsw, resultMap, columnPrefix);
     } else if (!constructorMappings.isEmpty()) {
       //有参数的构造函数
