@@ -357,7 +357,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     //调用自己的createResultObject,内部就是new一个对象(如果是简单类型，new完也把值赋进去)
     Object resultObject = createResultObject(rsw, resultMap, lazyLoader, null);
     if (resultObject != null && !typeHandlerRegistry.hasTypeHandler(resultMap.getType())) {
-      //一般不是简单类型不会有typehandler,这个if会进来
+      //一般的简单类型存在typehandler,不会进入这个if
       final MetaObject metaObject = configuration.newMetaObject(resultObject);
       boolean foundValues = !resultMap.getConstructorResultMappings().isEmpty();
       if (shouldApplyAutomaticMappings(resultMap, false)) {        
@@ -563,8 +563,8 @@ public class DefaultResultSetHandler implements ResultSetHandler {
       final List<ResultMapping> propertyMappings = resultMap.getPropertyResultMappings();
       for (ResultMapping propertyMapping : propertyMappings) {
         // issue gcode #109 && issue #149
+          // 当内嵌的property中含有嵌套查询的 并且是延迟加载的时候，讲当前类包装为并使用延迟加载。
         if (propertyMapping.getNestedQueryId() != null && propertyMapping.isLazy()) {
-          // 使用代理(cglib/javaassist) 实现延迟加载
           return configuration.getProxyFactory().createProxy(resultObject, lazyLoader, configuration, objectFactory, constructorArgTypes, constructorArgs);
         }
       }
