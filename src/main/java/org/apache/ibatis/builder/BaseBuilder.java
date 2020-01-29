@@ -107,12 +107,12 @@ public abstract class BaseBuilder {
 
   //根据别名解析Class，然后创建实例
   protected Object createInstance(String alias) {
-    Class<?> clazz = resolveClass(alias);
+    final Class<?> clazz = resolveClass(alias);
     if (clazz == null) {
       return null;
     }
     try {
-      return resolveClass(alias).newInstance();
+      return clazz.newInstance();
     } catch (Exception e) {
       throw new BuilderException("Error creating instance. Cause: " + e, e);
     }
@@ -152,7 +152,7 @@ public abstract class BaseBuilder {
       return null;
     }
     // javaType ignored for injected handlers see issue #746 for full detail
-    //去typeHandlerRegistry查询对应的TypeHandler
+    //去typeHandlerRegistry查询的TypeHandler对应的实例
     TypeHandler<?> handler = typeHandlerRegistry.getMappingTypeHandler(typeHandlerType);
     if (handler == null) {
       // not in registry, create a new one

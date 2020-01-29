@@ -20,7 +20,7 @@ package org.apache.ibatis.executor;
  */
 /**
  * 
- * 错误上下文
+ * 错误上下文 备忘录模式。
  */
 public class ErrorContext {
   // 获得 \n 不同的操作系统不一样
