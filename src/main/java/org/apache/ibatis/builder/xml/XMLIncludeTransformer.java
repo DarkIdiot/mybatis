@@ -45,14 +45,26 @@ public class XMLIncludeTransformer {
 //  from some_table
 //  where id = #{id}
 //</select>
+  // Dom 操作
+  // <include refid="userColumns"/>
+  //    ==>
+  // <include refid="userColumns">
+  //  <sql>anyColumn1,anyColumn2 ... </sql>
+  // </include>
+  //    ==>
+  //  anyColumn1,anyColumn2 ...
+  //  ************  Summarize ***********
+  //  select anyColumn1,anyColumn2 ...
+  //  from some_table
+  //  where id = #{id}
   public void applyIncludes(Node source) {
     if (source.getNodeName().equals("include")) {
       //走到这里，单独解析<include refid="userColumns"/>
       //拿到SQL片段
       Node toInclude = findSqlFragment(getStringAttribute(source, "refid"));
-      //递归调用自己,应用上?
+      //递归调用自己, 最终方法的返回的toInclude 是一个不包含<include>节点的node.
       applyIncludes(toInclude);
-      //总之下面就是将字符串拼接进来，看不懂。。。
+      // 下面是dom的处理过程，
       if (toInclude.getOwnerDocument() != source.getOwnerDocument()) {
         toInclude = source.getOwnerDocument().importNode(toInclude, true);
       }
@@ -77,7 +89,7 @@ public class XMLIncludeTransformer {
     try {
       //去之前存到内存map的SQL片段中寻找
       XNode nodeToInclude = configuration.getSqlFragments().get(refid);
-      //clone一下，以防改写？
+      //clone一下，以防改写？ 在拿到node 之后会对node 进行处理
       return nodeToInclude.getNode().cloneNode(true);
     } catch (IllegalArgumentException e) {
       throw new IncompleteElementException("Could not find SQL statement to include with refid '" + refid + "'", e);
